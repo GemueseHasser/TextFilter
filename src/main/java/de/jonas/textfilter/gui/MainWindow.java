@@ -66,6 +66,9 @@ public final class MainWindow extends GUI implements ActionListener {
             final String templateText = this.field.getText();
             FilterSystem.SYSTEM.filter(templateText);
 
+            // close current window
+            super.close();
+
             // open result window
             final ResultWindow resultWindow = new ResultWindow();
             resultWindow.open();
