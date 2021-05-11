@@ -69,6 +69,8 @@ public final class FilterSystem extends JFrame {
 
             filteredLines.add(i + ": " + line);
         }
+
+        scanner.close();
     }
 
 }
