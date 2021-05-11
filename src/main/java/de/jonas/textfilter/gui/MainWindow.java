@@ -15,18 +15,18 @@ public final class MainWindow extends GUI implements ActionListener {
 
     //<editor-fold desc="CONSTANTS">
     //<editor-fold desc="data-button">
-    private static final String DATA_BUTTON_TEXT = "Datei";
-    private static final int DATA_BUTTON_X = 30;
-    private static final int DATA_BUTTON_Y = 50;
-    private static final int DATA_BUTTON_WIDTH = 150;
+    private static final String DATA_BUTTON_TEXT = "Datei wählen";
+    private static final int DATA_BUTTON_X = 100;
+    private static final int DATA_BUTTON_Y = 30;
+    private static final int DATA_BUTTON_WIDTH = 300;
     private static final int DATA_BUTTON_HEIGHT = 30;
     //</editor-fold>
 
     //<editor-fold desc="text-field">
-    private static final int TEXT_FIELD_X = 250;
-    private static final int TEXT_FIELD_Y = 50;
-    private static final int TEXT_FIELD_WIDTH = 200;
-    private static final int TEXT_FIELD_HEIGHT = 30;
+    private static final int TEXT_FIELD_X = 50;
+    private static final int TEXT_FIELD_Y = 100;
+    private static final int TEXT_FIELD_WIDTH = 400;
+    private static final int TEXT_FIELD_HEIGHT = 40;
     //</editor-fold>
 
     //<editor-fold desc="filter-button">

@@ -6,6 +6,7 @@ import de.jonas.textfilter.system.FilterSystem;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.TextArea;
+import java.util.List;
 
 public final class ResultWindow extends GUI {
 
@@ -21,7 +22,13 @@ public final class ResultWindow extends GUI {
 
         area.setBounds(0, 0, width - 10, height - 35);
 
-        for (@NotNull final String line : FilterSystem.SYSTEM.getFilteredLines()) {
+        final List<String> filtered = FilterSystem.SYSTEM.getFilteredLines();
+
+        if (filtered.isEmpty()) {
+            area.append("Es wurde keine Übereinstimmung gefunden.");
+        }
+
+        for (@NotNull final String line : filtered) {
             area.append(line + "\n \n");
         }
 
