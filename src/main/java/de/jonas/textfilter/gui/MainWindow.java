@@ -13,28 +13,39 @@ import java.awt.event.ActionListener;
 
 public final class MainWindow extends GUI implements ActionListener {
 
+    //<editor-fold desc="CONSTANTS">
+    //<editor-fold desc="data-button">
     private static final String DATA_BUTTON_TEXT = "Datei";
     private static final int DATA_BUTTON_X = 30;
     private static final int DATA_BUTTON_Y = 50;
     private static final int DATA_BUTTON_WIDTH = 150;
     private static final int DATA_BUTTON_HEIGHT = 30;
+    //</editor-fold>
 
+    //<editor-fold desc="text-field">
     private static final int TEXT_FIELD_X = 250;
     private static final int TEXT_FIELD_Y = 50;
     private static final int TEXT_FIELD_WIDTH = 200;
     private static final int TEXT_FIELD_HEIGHT = 30;
+    //</editor-fold>
 
+    //<editor-fold desc="filter-button">
     private static final String FILTER_BUTTON_TEXT = "Filtern";
     private static final int FILTER_BUTTON_X = 50;
     private static final int FILTER_BUTTON_Y = 200;
     private static final int FILTER_BUTTON_WIDTH = 400;
     private static final int FILTER_BUTTON_HEIGHT = 50;
+    //</editor-fold>
+    //</editor-fold>
 
 
+    //<editor-fold desc="LOCAL FIELDS">
     private final JButton data;
     private final JButton filter;
 
     private final JTextField field;
+    //</editor-fold>
+
 
     public MainWindow() {
         super(WindowType.MAIN_WINDOW);
@@ -59,6 +70,7 @@ public final class MainWindow extends GUI implements ActionListener {
     public void actionPerformed(@NotNull final ActionEvent e) {
         if (e.getSource().equals(this.data)) {
             // get data
+            FilterSystem.SYSTEM.initializeData();
         }
 
         if (e.getSource().equals(this.filter)) {
