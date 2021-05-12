@@ -6,8 +6,10 @@ import de.jonas.textfilter.system.FilterSystem;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,6 +23,12 @@ public final class MainWindow extends GUI implements ActionListener {
     private static final int DATA_BUTTON_WIDTH = 300;
     private static final int DATA_BUTTON_HEIGHT = 30;
     //</editor-fold>
+
+    private static final String FIELD_LABEL_TEXT = "Filtern nach folgendem Text:";
+    private static final int FIELD_LABEL_X = 50;
+    private static final int FIELD_LABEL_Y = 80;
+    private static final int FIELD_LABEL_WIDTH = 400;
+    private static final int FIELD_LABEL_HEIGHT = 20;
 
     //<editor-fold desc="text-field">
     private static final int TEXT_FIELD_X = 50;
@@ -49,21 +57,46 @@ public final class MainWindow extends GUI implements ActionListener {
 
     public MainWindow() {
         super(WindowType.MAIN_WINDOW);
+        super.getFrame().setUndecorated(true);
+
+        super.setBackground(Color.LIGHT_GRAY);
 
         this.data = new JButton(DATA_BUTTON_TEXT);
         this.data.setBounds(DATA_BUTTON_X, DATA_BUTTON_Y, DATA_BUTTON_WIDTH, DATA_BUTTON_HEIGHT);
         this.data.addActionListener(this);
+        this.data.setFont(super.getFont());
+
+        final JLabel label = new JLabel(FIELD_LABEL_TEXT);
+        label.setBounds(FIELD_LABEL_X, FIELD_LABEL_Y, FIELD_LABEL_WIDTH, FIELD_LABEL_HEIGHT);
+        label.setFont(super.getFont());
 
         this.field = new JTextField();
         this.field.setBounds(TEXT_FIELD_X, TEXT_FIELD_Y, TEXT_FIELD_WIDTH, TEXT_FIELD_HEIGHT);
+        this.field.setFont(super.getFont());
 
         this.filter = new JButton(FILTER_BUTTON_TEXT);
         this.filter.setBounds(FILTER_BUTTON_X, FILTER_BUTTON_Y, FILTER_BUTTON_WIDTH, FILTER_BUTTON_HEIGHT);
         this.filter.addActionListener(this);
+        this.filter.setFont(super.getFont());
+
+        final JButton exit = new JButton("x");
+        exit.setFont(super.getFont());
+        exit.setOpaque(true);
+        exit.setBackground(Color.RED);
+        exit.setForeground(Color.WHITE);
+        exit.setBounds(super.getFrame().getWidth() - 45, 0, 45, 45);
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent actionEvent) {
+                System.exit(0);
+            }
+        });
 
         super.add(this.data);
-        super.add(this.field);
+        super.add(label);
+        super.getFrame().add(this.field);
         super.add(this.filter);
+        super.add(exit);
     }
 
     @Override
@@ -76,7 +109,9 @@ public final class MainWindow extends GUI implements ActionListener {
         if (e.getSource().equals(this.filter)) {
             // filter data from text
             final String templateText = this.field.getText();
-            FilterSystem.SYSTEM.filter(templateText);
+            if (!FilterSystem.SYSTEM.filter(templateText)) {
+                return;
+            }
 
             // close current window
             super.close();
