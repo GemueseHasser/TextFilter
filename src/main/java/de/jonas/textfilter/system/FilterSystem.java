@@ -67,7 +67,7 @@ public final class FilterSystem extends JFrame {
                 continue;
             }
 
-            filteredLines.add(i + ": " + line);
+            filteredLines.add("Zeile " + i + ": " + line);
         }
 
         scanner.close();
