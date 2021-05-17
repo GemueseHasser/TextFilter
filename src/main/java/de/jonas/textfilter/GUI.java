@@ -22,6 +22,8 @@ public class GUI {
     private final Font font;
     @Getter
     private final JFrame frame;
+    @Getter
+    private final Draw draw;
 
     @Setter
     private Color background = Color.WHITE;
@@ -35,14 +37,16 @@ public class GUI {
         this.frame.setLocationRelativeTo(null);
         this.frame.setLayout(null);
         this.frame.setResizable(false);
+
+        this.draw = new Draw();
+        this.draw.setBounds(0, 0, this.frame.getWidth(), this.frame.getHeight());
+        this.draw.setVisible(true);
     }
 
     public void open() {
         this.frame.setVisible(true);
 
-        final Draw draw = new Draw(this.background);
-        draw.setBounds(0, 0, this.frame.getWidth(), this.frame.getHeight());
-        draw.setVisible(true);
+        this.draw.setBackground(this.background);
 
         this.frame.add(draw);
     }
@@ -56,16 +60,15 @@ public class GUI {
         this.frame.add(component);
     }
 
-    private static final class Draw extends JLabel {
+    protected void draw(@NotNull final Graphics graphics) {}
 
-        private final Color background;
+    private final class Draw extends JLabel {
 
-        public Draw(@NotNull final Color background) {
-            this.background = background;
-        }
+        @Setter
+        private Color background;
 
         @Override
-        protected void paintComponent(final Graphics g) {
+        protected void paintComponent(@NotNull final Graphics g) {
             super.paintComponent(g);
 
             final Graphics2D g2d = (Graphics2D) g;
@@ -74,6 +77,14 @@ public class GUI {
 
             g.setColor(this.background);
             g.fillRect(0, 0, this.getWidth(), this.getHeight());
+
+            g.setColor(Color.BLACK);
+
+            GUI.this.draw(g);
+
+            g.dispose();
+
+            super.repaint();
         }
     }
 

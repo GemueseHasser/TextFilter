@@ -79,5 +79,4 @@ public final class ResultWindow extends GUI {
         this.pane.setCharacterAttributes(attributeSet, false);
         this.pane.replaceSelection(text);
     }
-
 }

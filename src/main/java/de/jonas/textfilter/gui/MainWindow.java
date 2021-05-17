@@ -10,8 +10,10 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public final class MainWindow extends GUI implements ActionListener {
 
@@ -120,5 +122,11 @@ public final class MainWindow extends GUI implements ActionListener {
             final ResultWindow resultWindow = new ResultWindow();
             resultWindow.open();
         }
+    }
+
+    @Override
+    protected void draw(@NotNull final Graphics graphics) {
+        final File file = FilterSystem.SYSTEM.getFile();
+        graphics.drawString("Datei: " + (file == null ? "-" : file.getName()), 100, 20);
     }
 }

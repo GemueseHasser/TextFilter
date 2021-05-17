@@ -5,10 +5,10 @@ import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import java.awt.Component;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public final class FilterSystem extends JFrame {
+public final class FilterSystem extends Component {
 
     public static final FilterSystem SYSTEM = new FilterSystem();
 
@@ -25,7 +25,8 @@ public final class FilterSystem extends JFrame {
     @Getter
     private final Map<Integer, String> filteredLines = new HashMap<Integer, String>();
 
-    private String pfad;
+    @Getter
+    private File file;
 
     public void initializeData() {
         // initialize text in lines
@@ -46,7 +47,7 @@ public final class FilterSystem extends JFrame {
         final int result = chooser.showOpenDialog(this);
 
         if (result == JFileChooser.OPEN_DIALOG) {
-            this.pfad = chooser.getSelectedFile().toString();
+            this.file = chooser.getSelectedFile();
         }
 
         chooser.setVisible(false);
@@ -54,10 +55,7 @@ public final class FilterSystem extends JFrame {
 
     @SneakyThrows
     public boolean filter(@NotNull final String templateText) {
-        final File file;
-        try {
-            file = new File(this.pfad);
-        } catch (@NotNull final NullPointerException ignored) {
+        if (this.file == null) {
             JOptionPane.showMessageDialog(
                 null,
                 "Es wurde keine Datei ausgewählt!",
@@ -67,7 +65,7 @@ public final class FilterSystem extends JFrame {
             return false;
         }
 
-        final Scanner scanner = new Scanner(file);
+        final Scanner scanner = new Scanner(this.file);
 
         while (scanner.hasNextLine()) {
             this.textInLines.add(scanner.nextLine());
