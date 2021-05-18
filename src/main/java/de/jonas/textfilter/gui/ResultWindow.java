@@ -39,6 +39,7 @@ public final class ResultWindow extends GUI {
     private static final int SAVE_BUTTON_HEIGHT = 30;
     //</editor-fold>
 
+
     //<editor-fold desc="LOCAL FIELDS">
     /** Das {@link JTextPane}, worin die gefilterten Ergebnisse dargestellt werden. */
     private final JTextPane pane;
