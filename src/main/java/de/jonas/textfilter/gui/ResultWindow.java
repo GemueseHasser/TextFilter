@@ -6,6 +6,7 @@ import de.jonas.textfilter.system.FilterSystem;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.AttributeSet;
@@ -15,8 +16,6 @@ import javax.swing.text.StyleContext;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Map;
 
 public final class ResultWindow extends GUI {
@@ -73,11 +72,14 @@ public final class ResultWindow extends GUI {
         save.setBackground(Color.GRAY);
         save.setForeground(Color.WHITE);
         save.setFont(super.getFont());
-        save.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent actionEvent) {
-                FilterSystem.SYSTEM.writePDF();
-            }
+        save.addActionListener(actionEvent -> {
+            FilterSystem.SYSTEM.writePDF();
+            JOptionPane.showMessageDialog(
+                null,
+                "Die gefilterten Werte wurden im Download Verzeichnis gespeichert!",
+                "Gespeichert!",
+                JOptionPane.INFORMATION_MESSAGE
+            );
         });
 
         super.add(save);
