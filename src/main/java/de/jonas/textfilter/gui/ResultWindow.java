@@ -16,23 +16,41 @@ import javax.swing.text.StyleContext;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.util.Map;
 
+/**
+ * Das {@link ResultWindow} wird geöffnet, sobald der Nutzer auf "filtern" klickt. In diesem {@link GUI} wird dann das
+ * gefilterte Ergebnis dargestellt. Zudem hat man in diesem {@link GUI} die Möglichkeit, die gefilterten Ergebnisse zu
+ * speichern.
+ */
 public final class ResultWindow extends GUI {
 
     //<editor-fold desc="CONSTANTS">
+    /** Der Text des Buttons, womit man die gefilterten Ergebnisse speichern kann. */
     private static final String SAVE_BUTTON_TEXT = "Speichern";
+    /** Die X-Koordinate des Buttons, womit man die gefilterten Ergebnisse speichern kann. */
     private static final int SAVE_BUTTON_X = 0;
+    /** Die Y-Koordinate des Buttons, womit man die gefilterten Ergebnisse speichern kann. */
     private static final int SAVE_BUTTON_Y = 435;
+    /** Die Breite des Buttons, womit man die gefilterten Ergebnisse speichern kann. */
     private static final int SAVE_BUTTON_WIDTH = 490;
+    /** Die Höhe des Buttons, womit man die gefilterten Ergebnisse speichern kann. */
     private static final int SAVE_BUTTON_HEIGHT = 30;
     //</editor-fold>
 
     //<editor-fold desc="LOCAL FIELDS">
+    /** Das {@link JTextPane}, worin die gefilterten Ergebnisse dargestellt werden. */
     private final JTextPane pane;
     //</editor-fold>
 
     //<editor-fold desc="CONSTRUCTORS">
+
+    /**
+     * Erzeugt eine neue und vollständig unabhängige Instanz des {@link ResultWindow}. Das {@link ResultWindow} wird
+     * geöffnet, sobald der Nutzer auf "filtern" klickt. In diesem {@link GUI} wird dann das gefilterte Ergebnis
+     * dargestellt. Zudem hat man in diesem {@link GUI} die Möglichkeit, die gefilterten Ergebnisse zu speichern.
+     */
     public ResultWindow() {
         super(WindowType.RESULT_WINDOW);
 
@@ -87,6 +105,14 @@ public final class ResultWindow extends GUI {
     }
     //</editor-fold>
 
+
+    /**
+     * Fügt einen bestimmten Text, mit einer bestimmten {@link Color Farbe} zu dem {@link JTextPane} dieser Instanz
+     * hinzu.
+     *
+     * @param text  Der Text, der zu dem {@link JTextPane} hinzugefügt wird.
+     * @param color Die {@link Color Farbe}, in der der Text dargestellt wird.
+     */
     private void appendToPane(String text, Color color) {
         final StyleContext styleContext = StyleContext.getDefaultStyleContext();
 
@@ -111,5 +137,10 @@ public final class ResultWindow extends GUI {
         this.pane.setCaretPosition(length);
         this.pane.setCharacterAttributes(attributeSet, false);
         this.pane.replaceSelection(text);
+    }
+
+    @Override
+    protected void draw(final @NotNull Graphics graphics) {
+        // draw stuff on frame
     }
 }

@@ -14,20 +14,38 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-public class GUI {
+/**
+ * Ein {@link GUI} ist ein leeres Fenster, welches als Vorlage für genauer definierte Fenster dient.
+ */
+public abstract class GUI {
 
+    //<editor-fold desc="LOCAL FIELDS">
+    /** Der Typ des Fensters. */
     @Getter
     private final WindowType type;
+    /** Die Basis-Schriftart des Fensters. */
     @Getter
     private final Font font;
+    /** Das {@link JFrame}, auf das das gesamte {@link GUI} aufbaut. */
     @Getter
     private final JFrame frame;
+    /** Mithilfe dieses {@link Draw} wird alles auf das Fenster gezeichnet. */
     @Getter
     private final Draw draw;
-
+    /** Die {@link Color Hintergrund-Farbe} des Fensters. */
     @Setter
     private Color background = Color.WHITE;
+    //</editor-fold>
 
+
+    //<editor-fold desc="CONSTRUCTORS">
+
+    /**
+     * Erzeugt mithilfe eines {@link WindowType} eine neue und vollständig unabhängige Instanz des {@link GUI}. Ein
+     * {@link GUI} ist ein leeres Fenster, welches als Vorlage für genauer definierte Fenster dient.
+     *
+     * @param type Der {@link WindowType Typ} des {@link GUI}.
+     */
     public GUI(@NotNull final WindowType type) {
         this.type = type;
         this.font = new Font("Arial", Font.BOLD, 15);
@@ -42,7 +60,12 @@ public class GUI {
         this.draw.setBounds(0, 0, this.frame.getWidth(), this.frame.getHeight());
         this.draw.setVisible(true);
     }
+    //</editor-fold>
 
+
+    /**
+     * Öffnet das {@link GUI}.
+     */
     public void open() {
         this.frame.setVisible(true);
 
@@ -51,22 +74,44 @@ public class GUI {
         this.frame.add(draw);
     }
 
+    /**
+     * Schließt das {@link GUI}.
+     */
     public void close() {
         this.frame.dispose();
     }
 
+    /**
+     * Fügt einen bestimmten {@link Component Komponenten} zu dem {@link GUI} hinzu.
+     *
+     * @param component Der {@link Component Komponent}, der zu dem {@link GUI} hinzugefügt wird.
+     */
     public void add(@NotNull final Component component) {
         component.setFocusable(false);
         this.frame.add(component);
     }
 
-    protected void draw(@NotNull final Graphics graphics) {}
+    /**
+     * Diese Methode wird konstant wiederholt aufgerufen, um etwas auf das {@link GUI} zu zeichnen.
+     *
+     * @param graphics Die {@link Graphics}, mit der gezeichnet wird.
+     */
+    protected abstract void draw(@NotNull final Graphics graphics);
 
+    //<editor-fold desc="Draw">
+
+    /**
+     * Mithilfe dieses {@link Draw} wird alles auf das Fenster gezeichnet.
+     */
     private final class Draw extends JLabel {
 
+        //<editor-fold desc="LOCAL FIELDS">
+        /** Die Hintergrund-Farbe des Fensters. */
         @Setter
         private Color background;
+        //</editor-fold>
 
+        //<editor-fold desc="paint">
         @Override
         protected void paintComponent(@NotNull final Graphics g) {
             super.paintComponent(g);
@@ -86,6 +131,8 @@ public class GUI {
 
             super.repaint();
         }
+        //</editor-fold>
     }
+    //</editor-fold>
 
 }

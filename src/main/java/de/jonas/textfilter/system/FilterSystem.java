@@ -24,23 +24,46 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * In dem {@link FilterSystem} werden alle Aktionen ausgeführt, die zum Filtern gebraucht werden. Dies sind
+ * hauptsächlich drei Aktionen: Einmal das Auswählen der zu filternden Datei, dann das hauptsächliche Filtern des Textes
+ * und das Abspeichern der Ergebnisse in PDF-Format.
+ */
 public final class FilterSystem extends Component {
 
+    //<editor-fold desc="CONSTANTS">
+    /** Die Instanz-Variable, womit man auf diese Instanz zugreifen kann. */
     public static final FilterSystem SYSTEM = new FilterSystem();
 
-    private static final int SAVED_PDF_MARGIN_TOP = 700;
+    /** Der Abstand von der unteren Kante eines PDF-Dokumentes, von wo die erste Zeile beginnt. */
+    private static final int SAVED_PDF_MARGIN_BOTTOM = 700;
+    /** Der Abstand von der linken Kante eines PDF-Dokumentes, von wo eine Zeile beginnt. */
     private static final int SAVED_PDF_MARGIN_LEFT = 50;
+    /** Die Schriftgröße der Überschrift. */
     private static final int HEADING_FONT_SIZE = 30;
+    /** Die Schriftgröße des normalen Textes. */
     private static final int DEFAULT_FONT_SIZE = 15;
+    //</editor-fold>
 
 
+    //<editor-fold desc="LOCAL FIELDS">
+    /** Alle Zeilen (ungefiltert) des zu filternden Dokuemntes. */
     private final List<String> textInLines = new ArrayList<>();
+    /** Alle herausgefilterten Zeilen des zu filterndesn Dokumentes mit Zeilen-Angabe. */
     @Getter
     private final Map<Integer, String> filteredLines = new HashMap<>();
 
+    /** Die zu filternde Datei. */
     @Getter
     private File file;
+    //</editor-fold>
 
+    //<editor-fold desc="initializing">
+
+    /**
+     * Öffnet dem Nutzer ein Fenster, in dem er die zu filternde Datei auswählen kann. Die ausgewählte Datei wird dann
+     * als zu filternde Datei initialisiert.
+     */
     public void initializeData() {
         // initialize text in lines
         final JFileChooser chooser = new JFileChooser("user.home");
@@ -65,7 +88,19 @@ public final class FilterSystem extends Component {
 
         chooser.setVisible(false);
     }
+    //</editor-fold>
 
+    //<editor-fold desc="basic filtering">
+
+    /**
+     * Zufalls der Nutzer schon eine Datei ausgewählt hat, wird diese nach einem bestimmten Vorlage-Text gefiltert und
+     * die gefilterten Ergebnisse werden in eine {@link Map} gespeichert. Wenn der Nutzer noch keine Darei ausgewählt
+     * hat, wird eine Error-Nachricht ausgegeben.
+     *
+     * @param templateText Der Vorlage-Text, nach dem die Datei gefiltert wird.
+     *
+     * @return Wenn das Filtern erfolgreich war, {@code true}, ansonsten {@code false}.
+     */
     @SneakyThrows
     public boolean filter(@NotNull final String templateText) {
         if (this.file == null) {
@@ -98,7 +133,13 @@ public final class FilterSystem extends Component {
         scanner.close();
         return true;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="saving">
+
+    /**
+     * Speichert den gefilterten Text als PDF-Datei im Download-Verzeichnis ab.
+     */
     @SneakyThrows
     public void writePDF() {
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm");
@@ -122,7 +163,7 @@ public final class FilterSystem extends Component {
 
         contentStream.setFont(font, HEADING_FONT_SIZE);
 
-        contentStream.newLineAtOffset(SAVED_PDF_MARGIN_LEFT, SAVED_PDF_MARGIN_TOP);
+        contentStream.newLineAtOffset(SAVED_PDF_MARGIN_LEFT, SAVED_PDF_MARGIN_BOTTOM);
 
         // draw heading
         contentStream.setNonStrokingColor(Color.DARK_GRAY);
@@ -135,7 +176,7 @@ public final class FilterSystem extends Component {
 
         for (@NotNull final Map.Entry<Integer, String> filteredLine : this.filteredLines.entrySet()) {
             line++;
-            final int base = pageOne ? SAVED_PDF_MARGIN_TOP : SAVED_PDF_MARGIN_TOP + 100;
+            final int base = pageOne ? SAVED_PDF_MARGIN_BOTTOM : SAVED_PDF_MARGIN_BOTTOM + 100;
             final int marginTop = base - line * (DEFAULT_FONT_SIZE + 10);
 
             final int currentLine = filteredLine.getKey();
@@ -175,5 +216,6 @@ public final class FilterSystem extends Component {
         document.save(filteredText);
         document.close();
     }
+    //</editor-fold>
 
 }
